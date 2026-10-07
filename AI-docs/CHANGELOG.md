@@ -34,6 +34,18 @@
 
 ---
 
+### 🐛 Fix #2 — Lỗi font tiếng Việt ở tiêu đề Hero ("CỦA CHÚNG TA")
+- **Files**: `app/src/app/layout.tsx`, `app/src/app/globals.css`, `app/src/components/Hero.tsx`
+- **Vấn đề**:
+  1. Font `Bebas_Neue` trên Google Fonts không hỗ trợ subset `vietnamese`, khiến các chữ có dấu như `Ủ` (trong từ "CỦA"), `Ú` (trong từ "CHÚNG") bị văng sang font fallback hệ thống, làm dấu hỏi bị lệch hoặc hiển thị thành ký tự lỗi.
+  2. Hàm `Letters` trong `Hero.tsx` dùng `text.split('')`, nếu chuỗi gặp ký tự Unicode tổ hợp (NFD combining diacritics) sẽ tách dấu hỏi thành một `span` riêng biệt.
+- **Thay đổi**:
+  - `layout.tsx`: Thay `Bebas_Neue` bằng font `Oswald` (font display condensed phong cách cinematic hỗ trợ đầy đủ subset `vietnamese`).
+  - `globals.css`: Cập nhật `--font-display: var(--font-oswald), sans-serif;`.
+  - `Hero.tsx`: Thêm `text.normalize('NFC')` và `Array.from()` trong component `Letters` để đảm bảo mỗi chữ cái có dấu luôn là 1 ký tự nguyên vẹn khi render hiệu ứng animation.
+
+---
+
 ## 📌 Ghi chú kỹ thuật
 
 ### Kiến trúc tổng quan

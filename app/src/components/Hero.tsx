@@ -2,9 +2,10 @@ import type { Couple } from '@/lib/types';
 import { Photo } from './Photo';
 
 function Letters({ text, delayBase = 0 }: { text: string; delayBase?: number }) {
+  const chars = Array.from(text.normalize('NFC'));
   return (
     <span aria-label={text}>
-      {text.split('').map((ch, i) => (
+      {chars.map((ch, i) => (
         <span key={i} className="letter-reveal" style={{ animationDelay: `${delayBase + i * 45}ms` }}>
           {ch === ' ' ? '\u00A0' : ch}
         </span>
