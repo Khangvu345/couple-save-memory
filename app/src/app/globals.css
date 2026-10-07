@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0a0a0c;
+  --color-panel: #141417;
+  --color-gold: #e2a63d;
+  --color-cream: #f3ecdd;
+  --color-smoke: #a39c8d;
+  --font-display: var(--font-oswald), sans-serif;
+  --font-serif2: var(--font-playfair), serif;
+  --font-hand: var(--font-dancing), cursive;
+  --font-body: var(--font-bevietnam), sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+/* film grain phủ toàn trang */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  z-index: 90;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* chữ reveal từng cụm khi chạm ảnh */
+@keyframes word-in {
+  from { opacity: 0; transform: translateY(10px); filter: blur(3px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+.word-reveal {
+  display: inline-block;
+  opacity: 0;
+  animation: word-in 0.5s ease forwards;
+}
+
+/* hero title reveal từng chữ */
+@keyframes letter-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.letter-reveal {
+  display: inline-block;
+  opacity: 0;
+  animation: letter-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
+}
+.pulse-dot {
+  width: 7px; height: 7px; border-radius: 9999px;
+  background: var(--color-gold);
+  animation: pulse-soft 1.6s ease-in-out infinite;
+}
+
+/* credits cuộn chậm */
+@keyframes credits-roll {
+  from { transform: translateY(38vh); }
+  to { transform: translateY(-110%); }
+}
+.credits-inner {
+  animation: credits-roll 36s linear infinite;
+}
+.credits-paused .credits-inner {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .credits-inner, .word-reveal, .letter-reveal { animation: none !important; opacity: 1 !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ảnh: tone cinematic đồng nhất */
+.photo-tone {
+  filter: sepia(0.22) saturate(0.92) contrast(1.04) brightness(0.96);
+}
+
+/* safe-area cho iPhone Dynamic Island + thanh Home */
+.safe-top { padding-top: max(env(safe-area-inset-top), 12px); }
+.safe-bottom { padding-bottom: max(env(safe-area-inset-bottom), 16px); }
+
+input, textarea { font-size: 16px; } /* tránh iOS tự zoom khi focus */
