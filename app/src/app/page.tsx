@@ -21,7 +21,7 @@ export default async function Page() {
     const sb = getSupabase()!;
     const cid = coupleId();
     const [cRes, mRes, tRes, wRes] = await Promise.all([
-      sb.from('couples').select('id,name_a,name_b,start_date,hero_photo_url,love_letter').eq('id', cid).single(),
+      sb.from('couples').select('id,name_a,name_b,start_date,start_time,hero_photo_url,love_letter').eq('id', cid).single(),
       sb.from('memories').select('*').eq('couple_id', cid).order('sort_order').order('date'),
       sb.from('little_things').select('*').eq('couple_id', cid).order('sort_order'),
       sb.from('wishes').select('*').eq('couple_id', cid).order('created_at'),

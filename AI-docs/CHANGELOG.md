@@ -5,6 +5,31 @@
 
 ---
 
+## [2026-10-11] — Session cập nhật bộ đếm và giao diện điện ảnh
+
+### ✨ Feature #2 — Bộ đếm thời gian thực theo giờ Việt Nam
+- **Files**: `app/src/components/Counter.tsx`, `app/src/app/page.tsx`, `app/src/lib/types.ts`, `app/src/lib/sample-data.ts`
+- **Thay đổi**:
+  - Chuyển `Counter` thành Client Component, cập nhật mỗi giây bằng `setInterval` và dọn timer khi unmount.
+  - Tính thời gian đã bên nhau theo năm, tháng, ngày, giờ, phút, giây dựa trên múi giờ `Asia/Ho_Chi_Minh`.
+  - Hiển thị thêm `start_time` bên cạnh ngày bắt đầu; dữ liệu cũ không có giờ mặc định về `00:00:00`.
+  - Bổ sung trường `start_time` vào kiểu `Couple`, truy vấn Supabase và dữ liệu mẫu.
+
+### 🎨 Feature #3 — Làm mới visual theo chủ đề khung phim
+- **Files**: `app/src/app/globals.css`, `app/src/components/Hero.tsx`, `app/src/components/Counter.tsx`, `app/src/components/Timeline.tsx`, `app/src/components/LittleThings.tsx`, `app/src/components/Wishlist.tsx`, `app/src/components/Credits.tsx`
+- **Thay đổi**:
+  - Thêm các lớp dùng chung `cinema-surface`, `paper-note` và `film-frame` với nền chuyển sắc, texture giấy và viền perforation như phim.
+  - Áp dụng bề mặt điện ảnh cho các section chính, giấy ghi chú cho nội dung scrapbook và khung phim cho phần credits.
+  - Giữ nguyên các tương tác hiện có của timeline, wishlist và phần thêm điều ước.
+
+### 🗄️ Database — Lưu giờ bắt đầu mối quan hệ
+- **Files**: `app/supabase/migrations/001_init.sql`, `app/supabase/migrations/002_add_start_time.sql`
+- **Thay đổi**:
+  - Thêm cột `couples.start_time` kiểu `time`, bắt buộc, mặc định `00:00:00` vào schema mới.
+  - Thêm migration an toàn cho project Supabase đã chạy schema Phase 1 bằng `add column if not exists`.
+
+---
+
 ## [2026-10-07] — Session khởi động
 
 ### 🔍 Khám phá dự án

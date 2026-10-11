@@ -16,11 +16,11 @@ function Letters({ text, delayBase = 0 }: { text: string; delayBase?: number }) 
 
 export function Hero({ couple }: { couple: Couple }) {
   return (
-    <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden text-center">
+    <section className="cinema-surface relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden text-center">
       {/* nền ảnh hero */}
       <div className="absolute inset-0">
         <Photo src={couple.hero_photo_url} className="h-full w-full" label="ẢNH HERO" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/40 via-ink/55 to-ink" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/25 via-ink/55 to-ink" />
       </div>
       {/* bokeh */}
       <div className="absolute left-[12%] top-[18%] h-28 w-28 rounded-full bg-gold/25 blur-2xl" />
@@ -30,8 +30,9 @@ export function Hero({ couple }: { couple: Couple }) {
         <p className="font-hand text-5xl text-gold">
           <Letters text="Bộ phim" />
         </p>
-        <h1 className="font-display mt-1 text-6xl tracking-wide">
-          <Letters text="CỦA CHÚNG TA" delayBase={350} />
+        <h1 className="font-serif2 mt-1 text-6xl leading-[.88] tracking-tight text-cream">
+          <span className="block"><Letters text="CỦA" delayBase={350} /></span>
+          <span className="block"><Letters text="CHÚNG TA" delayBase={500} /></span>
         </h1>
         <p className="font-hand mt-3 text-2xl text-cream">
           {couple.name_a} &amp; {couple.name_b}

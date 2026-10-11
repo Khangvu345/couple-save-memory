@@ -5,6 +5,7 @@ export interface Couple {
   name_a: string;
   name_b: string;
   start_date: string; // YYYY-MM-DD
+  start_time?: string | null; // HH:MM:SS theo giờ Việt Nam
   hero_photo_url?: string | null;
   love_letter?: string | null;
 }

@@ -3,9 +3,10 @@ import type { Couple, LittleThing, Memory, Wish } from './types';
 /** Dữ liệu mẫu — dùng khi chưa cấu hình Supabase, để chạy thử ngay. */
 export const sampleCouple: Couple = {
   id: 'sample',
-  name_a: 'Khang',
-  name_b: 'Em',
-  start_date: '2026-09-06',
+  name_a: 'Minh Khang',
+  name_b: 'Thùy Linh',
+  start_date: '2026-09-17',
+  start_time: '',
   hero_photo_url: null,
   love_letter: 'Gửi em,\n\nMột tháng — ngắn thôi, nhưng đủ để anh biết mình muốn kể tiếp câu chuyện này thật dài.\n\nCảm ơn em đã bước vào khung hình của anh.',
 };
