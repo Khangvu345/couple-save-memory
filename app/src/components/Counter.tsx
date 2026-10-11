@@ -58,7 +58,7 @@ export function Counter({ couple }: { couple: Couple }) {
       <div className="absolute right-[16%] top-[48%] h-10 w-10 rounded-full bg-gold/15 blur-lg" />
 
       <p className="font-mono text-[11px] tracking-[0.35em] text-smoke">BẮT ĐẦU TỪ</p>
-      <p className="font-serif2 mt-3 text-[26px] text-gold">{fmtDate(couple.start_date)} · {(couple.start_time ?? '00:00').slice(0, 5)} ♡</p>
+      <p className="font-serif2 mt-3 text-[26px] text-gold">{fmtDate(couple.start_date)} ♡</p>
 
       <p className="mt-8 text-[13px] text-smoke">Chúng ta đã bên nhau</p>
       <div className="mt-3 grid grid-cols-3 gap-x-5 gap-y-7">
