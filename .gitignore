@@ -16,3 +16,6 @@ app/.env.local.stop
 # OS files
 .DS_Store
 Thumbs.db
+
+app/supabase/
+.env.local
