@@ -11,6 +11,7 @@ app/out/
 # Environment files
 .env*.local
 app/.env*.local
+app/.env.local.stop
 
 # OS files
 .DS_Store
