@@ -1,8 +1,20 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useRef, useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Photo } from './Photo';
 
+const MAX_PHOTOS = 3;
+
+async function compressImage(file: File): Promise<Blob> {
+  const img = await createImageBitmap(file);
+  const maxDim = 1600;
+  const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(img.width * scale);
+  canvas.height = Math.round(img.height * scale);
+  canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
+  return await new Promise((res) => canvas.toBlob((b) => res(b!), 'image/jpeg', 0.82));
+}
 export function AddWishSheet({ configured, coupleNames }: { configured: boolean; coupleNames: [string, string] }) {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState('');
@@ -14,7 +26,10 @@ export function AddWishSheet({ configured, coupleNames }: { configured: boolean;
   const fileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  const previews = files.map((f) => URL.createObjectURL(f));
+  // thay dòng: const previews = files.map((f) => URL.createObjectURL(f));
+  const previews = useMemo(() => files.map((f) => URL.createObjectURL(f)), [files]);
+  useEffect(() => () => previews.forEach((u) => URL.revokeObjectURL(u)), [previews]);
+
 
   async function submit() {
     if (!text.trim()) { setError('Viết một điều ước đã nhé ♡'); return; }
@@ -26,7 +41,10 @@ export function AddWishSheet({ configured, coupleNames }: { configured: boolean;
       form.append('pin', savedPin);
       form.append('text', text.trim());
       form.append('createdBy', by);
-      files.forEach((f) => form.append('photos', f));
+      const compressed = await Promise.all(
+        files.map(async (f, i) => new File([await compressImage(f)], `wish-${Date.now()}-${i}.jpg`, { type: 'image/jpeg' }))
+      );
+      compressed.forEach((f) => form.append('photos', f));
       const res = await fetch('/api/wishes', { method: 'POST', body: form });
       if (res.status === 401) { sessionStorage.removeItem('couple-pin'); throw new Error('Sai mã PIN rồi, thử lại nhé.'); }
       if (!res.ok) throw new Error('Có lỗi khi lưu, thử lại nhé.');
@@ -96,7 +114,7 @@ export function AddWishSheet({ configured, coupleNames }: { configured: boolean;
               </button>
               <input
                 ref={fileRef} type="file" accept="image/*" multiple hidden
-                onChange={(e) => setFiles(Array.from(e.target.files ?? []).slice(0, 4))}
+                onChange={(e) => setFiles(Array.from(e.target.files ?? []).slice(0, MAX_PHOTOS))}
               />
             </div>
 

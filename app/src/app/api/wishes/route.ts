@@ -23,16 +23,17 @@ export async function POST(req: Request) {
   const hash = createHash('sha256').update(pin).digest('hex');
   if (hash !== couple.pin_hash) return Response.json({ error: 'Sai mã PIN.' }, { status: 401 });
 
-  // upload ảnh (tối đa 4 ảnh, mỗi ảnh < 8MB)
-  const urls: string[] = [];
-  const files = form.getAll('photos').filter((f): f is File => f instanceof File && f.size > 0).slice(0, 4);
-  for (const f of files) {
-    if (f.size > 8 * 1024 * 1024) continue;
-    const ext = (f.name.split('.').pop() ?? 'jpg').slice(0, 8);
-    const path = `${cid}/wishes/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    const { error } = await admin.storage.from('couple-photos').upload(path, f, { contentType: f.type });
-    if (!error) urls.push(admin.storage.from('couple-photos').getPublicUrl(path).data.publicUrl);
-  }
+  const files = form.getAll('photos').filter((f): f is File => f instanceof File && f.size > 0).slice(0, 3);
+  const uploaded = await Promise.all(files.map(async (f) => {
+  if (f.size > 8 * 1024 * 1024) return null;
+  const ext = (f.name.split('.').pop() ?? 'jpg').slice(0, 8);
+  const path = `${cid}/wishes/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const { error } = await admin.storage.from('couple-photos').upload(path, f, { contentType: f.type });
+  if (error) return null;
+  return admin.storage.from('couple-photos').getPublicUrl(path).data.publicUrl;
+  }));
+  const urls = uploaded.filter((u): u is string => !!u);
+  
 
   const { error: insErr } = await admin.from('wishes').insert({
     couple_id: cid, text, photos: urls, created_by: createdBy,

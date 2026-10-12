@@ -13,7 +13,13 @@ export function Wishlist({ wishes, configured, coupleNames }: { wishes: Wish[]; 
           <div key={w.id} className="flex min-h-[70px] items-center gap-[14px] overflow-hidden rounded-lg border border-gold/35 bg-[#151516] pl-4">
             <div className={`h-[22px] w-[22px] shrink-0 rounded-full border ${w.done ? 'border-gold bg-gold' : 'border-smoke'}`} />
             <p className={`flex-1 text-[14px] leading-[1.6] ${w.done ? 'text-smoke line-through' : ''}`}>{w.text}</p>
-            <Photo src={w.photos[0]} className="h-[70px] w-[94px] shrink-0 rounded-none" />
+            {(w.photos ?? []).length > 0 && (
+              <div className="flex shrink-0 gap-2 overflow-x-auto py-2 pr-1">
+              {(w.photos ?? []).map((src, i) => (
+              <Photo key={`${w.id}-${i}`} src={src} className="h-[56px] w-[56px] rounded-lg" />
+            ))}
+  </div>
+)}
           </div>
         ))}
       </div>
