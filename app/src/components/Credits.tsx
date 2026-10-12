@@ -1,13 +1,29 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Couple } from '@/lib/types';
 
 export function Credits({ couple }: { couple: Couple }) {
   const [paused, setPaused] = useState(false);
+  const [inView, setInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const lines = (couple.love_letter ?? '').split('\n').filter((l) => l.trim());
 
+  // chỉ kích hoạt dòng credit khi người dùng cuộn tới section
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      threshold: 0.2,
+    });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   return (
-    <section className={`film-frame cinema-surface relative mx-3 overflow-hidden px-7 py-20 text-center ${paused ? 'credits-paused' : ''}`}>
+    <section
+      ref={sectionRef}
+      className={`film-frame cinema-surface relative mx-3 overflow-hidden px-7 py-20 text-center${inView ? ' credits-running' : ''}${paused ? ' credits-paused' : ''}`}
+    >
       <div className="absolute left-[16%] top-[16%] h-[90px] w-[90px] rounded-full bg-gold/25 blur-2xl" />
       <div className="absolute right-[20%] top-[42%] h-[50px] w-[50px] rounded-full bg-gold/20 blur-xl" />
       <div className="absolute left-[28%] top-[68%] h-9 w-9 rounded-full bg-gold/15 blur-lg" />

@@ -31,9 +31,9 @@ export function Hero({ couple }: { couple: Couple }) {
         <p className="font-hand -rotate-2 text-[44px] leading-none text-gold">
           <Letters text="Bộ phim" />
         </p>
-        <h1 className="font-serif2 -mt-2 text-[46px] leading-[1.12] text-cream">
-          <span className="block"><Letters text="của" delayBase={300} /></span>
-          <span className="block">
+        <h1 className="font-serif not-italic -mt-2 translate-x-[10px] text-[46px] leading-[1.05] text-cream">
+          <span className="relative top-2 block"><Letters text="của" delayBase={300} /></span>
+          <span className="-mt-1 block">
             <Letters text="chúng ta" delayBase={450} />
             <span className="ml-2 align-middle text-[22px] text-gold">♥</span>
           </span>

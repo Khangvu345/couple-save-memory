@@ -104,7 +104,7 @@ export function Timeline({ memories }: { memories: Memory[] }) {
         {memories.map((m, i) => (
           <Item key={m.id} memory={m} first={i === 0} />
         ))}
-        <p className="font-mono text-[10px] tracking-[0.25em] text-smoke">TO BE CONTINUED…</p>
+        <p className="font-mono text-[10px] tracking-[0.25em] text-gold">CHƯA HẾT ĐÂU.....</p>
       </div>
     </section>
   );

@@ -104,8 +104,14 @@ body {
   from { transform: translateY(38vh); }
   to { transform: translateY(-110%); }
 }
-.credits-inner {
+
+/* credit chỉ chạy khi cuộn tới section (kích hoạt bằng IntersectionObserver) */
+
+.credits-running .credits-inner {
   animation: credits-roll 36s linear infinite;
+}
+.credits-paused .credits-inner {
+  animation-play-state: paused;
 }
 .credits-paused .credits-inner {
   animation-play-state: paused;
@@ -126,3 +132,4 @@ body {
 .safe-bottom { padding-bottom: max(env(safe-area-inset-bottom), 16px); }
 
 input, textarea { font-size: 16px; } /* tránh iOS tự zoom khi focus */
+
