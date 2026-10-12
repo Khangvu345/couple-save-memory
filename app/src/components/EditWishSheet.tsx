@@ -71,14 +71,14 @@ export function EditWishSheet({ wish, onClose, onSaved }: {
   return (
     <div className="fixed inset-0 z-[100]">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
-      <div className="safe-bottom absolute bottom-0 left-0 right-0 rounded-t-[22px] border-t border-white/10 bg-[#17171a] px-5 pb-10 pt-3">
-        <div className="mx-auto mb-5 h-1 w-[42px] rounded bg-[#3c3c41]" />
+      <div className="safe-bottom absolute bottom-0 left-0 right-0 rounded-t-[22px] border-t border-white/10 bg-panel px-5 pb-10 pt-3">
+        <div className="mx-auto mb-5 h-1 w-[42px] rounded bg-smoke" />
         <h3 className="font-hand text-[30px] text-gold">Sửa điều ước</h3>
 
         <textarea
           value={text} onChange={(e) => setText(e.target.value)}
           rows={3}
-          className="mt-4 w-full rounded-xl border border-gold bg-[#0d0d0f] p-4 leading-[1.7] text-cream focus:outline-none"
+          className="mt-4 w-full rounded-xl border border-gold bg-ink p-4 leading-[1.7] text-cream focus:outline-none"
         />
 
         <p className="font-mono mt-5 text-[9px] tracking-[0.22em] text-smoke">
@@ -115,7 +115,7 @@ export function EditWishSheet({ wish, onClose, onSaved }: {
             value={pin} onChange={(e) => setPin(e.target.value)}
             placeholder="Mã PIN chung của hai đứa"
             inputMode="numeric"
-            className="mt-4 w-full rounded-xl border border-white/15 bg-[#0d0d0f] p-4 text-cream placeholder:text-smoke/60 focus:outline-none"
+            className="mt-4 w-full rounded-xl border border-white/15 bg-ink p-4 text-cream placeholder:text-smoke/60 focus:outline-none"
           />
         )}
         {error && <p className="mt-3 text-[13px] text-red-400">{error}</p>}

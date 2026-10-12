@@ -6,7 +6,11 @@
   --color-gold: #e2a63d;
   --color-cream: #f3ecdd;
   --color-smoke: #a39c8d;
+  --color-paper: #d8c7a8;
+  --color-paper-ink: #4a4032;
+  --color-tape: #b6ac98;
   --font-display: var(--font-oswald), sans-serif;
+  --font-number: var(--font-bebas), sans-serif;
   --font-serif2: var(--font-playfair), serif;
   --font-hand: var(--font-dancing), cursive;
   --font-body: var(--font-bevietnam), sans-serif;
@@ -17,7 +21,7 @@ html {
 }
 
 body {
-  background: #090a0c;
+  background: var(--color-ink);
   color: var(--color-cream);
   font-family: var(--font-body);
   -webkit-tap-highlight-color: transparent;
@@ -27,34 +31,64 @@ body {
 /* Ánh sáng mờ và viền mảnh tạo chiều sâu như một khung phim. */
 .cinema-surface {
   background:
-    radial-gradient(circle at 78% 14%, rgba(226,166,61,.12), transparent 22%),
-    radial-gradient(circle at 16% 74%, rgba(226,166,61,.08), transparent 20%),
-    linear-gradient(155deg, #101215 0%, #0a0b0d 58%, #070708 100%);
+    radial-gradient(circle at 78% 14%, rgba(226,166,61,.05), transparent 22%),
+    radial-gradient(circle at 16% 74%, rgba(226,166,61,.035), transparent 20%),
+    linear-gradient(155deg, var(--color-panel) 0%, var(--color-ink) 58%, var(--color-ink) 100%);
 }
 
 .paper-note {
-  background-color: #e8dcc4;
-  background-image: linear-gradient(90deg, rgba(91,72,42,.055) 1px, transparent 1px), linear-gradient(rgba(91,72,42,.04) 1px, transparent 1px);
-  background-size: 14px 14px;
+  background-color: var(--color-paper);
+  background-image: none;
   box-shadow: 0 14px 28px rgba(0,0,0,.42);
+}
+
+.little-branch-asset {
+  position: absolute;
+  right: -8px;
+  bottom: 4px;
+  width: 112px;
+  height: 190px;
+  z-index: 1;
+  pointer-events: none;
+  object-fit: cover;
+  object-position: 72% 76%;
+  opacity: .92;
+  filter: sepia(.2) saturate(1.35) brightness(.68) contrast(1.08);
+}
+.little-branch-tape {
+  position: absolute;
+  right: 28px;
+  bottom: 20px;
+  width: 42px;
+  height: 17px;
+  z-index: 2;
+  pointer-events: none;
+  transform: rotate(-18deg);
+  background: rgba(182,172,152,.72);
+  box-shadow: 0 1px 3px rgba(0,0,0,.22);
 }
 
 .film-frame {
   position: relative;
-  border-inline: 13px solid #171719;
-  background-image: linear-gradient(90deg, rgba(226,166,61,.12), transparent 14%, transparent 86%, rgba(226,166,61,.12));
+  border-inline: 16px solid rgba(226,166,61,.18);
+  background-image: linear-gradient(90deg, rgba(226,166,61,.06), transparent 14%, transparent 86%, rgba(226,166,61,.06));
 }
 .film-frame::before,
 .film-frame::after {
   content: '';
   position: absolute;
-  inset-block: 14px;
-  width: 7px;
-  background: repeating-linear-gradient(to bottom, #050506 0 17px, transparent 17px 29px);
+  inset-block: 10px;
+  width: 22px;
+  border-radius: 3px;
+  background-color: rgba(226,166,61,.08);
+  background-image: radial-gradient(circle 8px at center 12px, var(--color-ink) 0 70%, transparent 76%);
+  background-size: 100% 38px;
+  background-repeat: repeat-y;
+  box-shadow: inset 0 0 16px rgba(226,166,61,.18);
   z-index: 2;
 }
-.film-frame::before { left: -10px; }
-.film-frame::after { right: -10px; }
+.film-frame::before { left: -19px; }
+.film-frame::after { right: -19px; }
 
 /* film grain phủ toàn trang */
 .grain::after {
@@ -106,12 +140,14 @@ body {
 }
 
 /* credit chỉ chạy khi cuộn tới section (kích hoạt bằng IntersectionObserver) */
+.credits-inner {
+  visibility: hidden;
+  transform: translateY(38vh);
+}
 
 .credits-running .credits-inner {
+  visibility: visible;
   animation: credits-roll 36s linear infinite;
-}
-.credits-paused .credits-inner {
-  animation-play-state: paused;
 }
 .credits-paused .credits-inner {
   animation-play-state: paused;
@@ -124,7 +160,7 @@ body {
 
 /* ảnh: tone cinematic đồng nhất */
 .photo-tone {
-  filter: sepia(0.22) saturate(0.92) contrast(1.04) brightness(0.96);
+  filter: sepia(0.06) saturate(1) contrast(1.02) brightness(1);
 }
 
 /* safe-area cho iPhone Dynamic Island + thanh Home */

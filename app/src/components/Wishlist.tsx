@@ -35,14 +35,14 @@ export function Wishlist({ wishes, configured, coupleNames }: {
   }
 
   return (
-    <section className="cinema-surface px-[22px] py-16">
-      <h2 className="font-hand text-[32px] text-gold">Mình còn muốn…</h2>
+    <section className="cinema-surface px-[22px] py-14">
+      <h2 className="font-hand -rotate-2 text-[44px] leading-none text-gold">Mình còn muốn… <span className="text-[28px]">♡</span></h2>
       <p className="mt-2 text-[12px] leading-[1.7] text-smoke">Những điều chúng ta sẽ cùng nhau làm.</p>
       {error && <p className="mt-3 text-[13px] text-red-400">{error}</p>}
 
       <div className="mt-6 space-y-3">
         {items.map((w) => (
-          <div key={w.id} className="rounded-lg border border-gold/35 bg-[#151516] p-4">
+          <div key={w.id} className="rounded-[3px] border border-gold/25 bg-panel p-4">
             {/* hàng 1: tròn + chữ full-width + nút sửa */}
             <div className="flex items-start gap-[14px]">
               <div className={`mt-[2px] h-[22px] w-[22px] shrink-0 rounded-full border ${w.done ? 'border-gold bg-gold' : 'border-smoke'}`} />

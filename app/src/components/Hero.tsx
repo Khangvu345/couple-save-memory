@@ -20,7 +20,7 @@ export function Hero({ couple }: { couple: Couple }) {
       {/* nền ảnh hero */}
       <div className="absolute inset-0">
         <Photo src={couple.hero_photo_url} className="h-full w-full" label="ẢNH HERO" />
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/20 via-ink/45 to-ink/95" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/10 via-ink/25 to-ink/80" />
       </div>
       {/* bokeh */}
       <div className="absolute left-[12%] top-[18%] h-28 w-28 rounded-full bg-gold/25 blur-2xl" />
@@ -31,11 +31,11 @@ export function Hero({ couple }: { couple: Couple }) {
         <p className="font-hand -rotate-2 text-[44px] leading-none text-gold">
           <Letters text="Bộ phim" />
         </p>
-        <h1 className="font-serif not-italic -mt-2 translate-x-[10px] text-[46px] leading-[1.05] text-cream">
-          <span className="relative top-2 block"><Letters text="của" delayBase={300} /></span>
-          <span className="-mt-1 block">
+        <h1 className="font-serif2 not-italic -mt-2 translate-x-[10px] text-[46px] leading-[1.05] text-cream">
+          <span className="relative top-[10px] block"><Letters text="của" delayBase={300} /></span>
+          <span className="relative top-1 block">
             <Letters text="chúng ta" delayBase={450} />
-            <span className="ml-2 align-middle text-[22px] text-gold">♥</span>
+            <span className="ml-2 align-middle text-[22px] text-gold">♡</span>
           </span>
         </h1>
         <p className="font-hand mt-3 text-[26px] text-gold">
@@ -46,7 +46,11 @@ export function Hero({ couple }: { couple: Couple }) {
       <div className="safe-bottom absolute bottom-8 left-0 right-0 z-10 text-center">
         <a href="#counter">
           <p className="font-mono text-[10px] tracking-[0.3em] text-smoke">CUỘN XUỐNG ĐỂ BẮT ĐẦU</p>
-          <p className="mt-2 text-gold" style={{ animation: 'pulse-soft 1.8s infinite' }}>▾</p>
+          <span
+            aria-hidden="true"
+            className="mx-auto mt-4 block h-4 w-4 rotate-45 border-b-2 border-r-2 border-gold"
+            style={{ animation: 'pulse-soft 1.8s infinite' }}
+          />
         </a>
       </div>
     </section>

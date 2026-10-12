@@ -42,8 +42,8 @@ function Story({ memory, open, onToggle }: { memory: Memory; open: boolean; onTo
 function Item({ memory, first }: { memory: Memory; first: boolean }) {
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((v) => !v);
-  const dateCls = first ? 'text-gold' : 'text-smoke';
-  const dotCls = first ? 'bg-gold' : 'bg-smoke';
+  const dateCls = 'text-gold';
+  const dotCls = 'bg-gold';
 
   return (
     <div className="relative mb-9 min-h-[104px] pr-[112px]">
@@ -61,7 +61,7 @@ function Item({ memory, first }: { memory: Memory; first: boolean }) {
 
           {memory.layout === 'polaroid' && (
             <button onClick={toggle} className="absolute right-0 top-1 block w-[98px] text-left">
-              <div className="rotate-2 rounded-[2px] bg-[#e9dfca] p-[5px] pb-[16px] shadow-[0_10px_22px_rgba(0,0,0,0.55)]">
+              <div className="rotate-2 rounded-[2px] bg-cream p-[5px] pb-[16px] shadow-[0_10px_22px_rgba(0,0,0,0.55)]">
                 <Photo src={memory.photos[0]} className="aspect-square w-full rounded-[1px]" />
               </div>
             </button>
@@ -69,14 +69,14 @@ function Item({ memory, first }: { memory: Memory; first: boolean }) {
 
           {(memory.layout === 'big' || memory.layout === 'standard') && (
             <button onClick={toggle} className="absolute right-0 top-1 block w-[98px]">
-              <div className="rotate-2 border-2 border-[#ded4c1] p-[3px] shadow-[0_10px_22px_rgba(0,0,0,0.55)]">
+              <div className="rotate-2 border-2 border-cream p-[3px] shadow-[0_10px_22px_rgba(0,0,0,0.55)]">
                 <Photo src={memory.photos[0]} className="aspect-square w-full rounded-none" />
               </div>
             </button>
           )}
 
           {memory.layout === 'pair' && (
-            <button onClick={toggle} className="absolute right-0 top-1 flex w-[98px] gap-1 border-2 border-[#ded4c1] bg-[#ded4c1] p-[3px] shadow-[0_10px_22px_rgba(0,0,0,0.55)]">
+            <button onClick={toggle} className="absolute right-0 top-1 flex w-[98px] gap-1 border-2 border-cream bg-cream p-[3px] shadow-[0_10px_22px_rgba(0,0,0,0.55)]">
               <Photo src={memory.photos[0]} className="aspect-[3/4] min-w-0 flex-1" />
               <Photo src={memory.photos[1]} className="aspect-[3/4] min-w-0 flex-1" />
             </button>
@@ -97,10 +97,10 @@ function Item({ memory, first }: { memory: Memory; first: boolean }) {
 
 export function Timeline({ memories }: { memories: Memory[] }) {
   return (
-    <section className="cinema-surface px-[22px] py-16">
-      <h2 className="font-display text-center text-[16px] tracking-[.12em] text-gold">HÀNH TRÌNH CỦA CHÚNG TA <span className="text-[10px]">●</span></h2>
+    <section className="cinema-surface px-[22px] py-14">
+      <h2 className="font-display text-center text-[16px] tracking-[.12em] text-gold">HÀNH TRÌNH CỦA CHÚNG TA <span className="text-[12px]">♡</span></h2>
       <div className="relative mt-6 pl-[22px]">
-        <div className="absolute bottom-2 left-[5px] top-2 w-px bg-white/10" />
+        <div className="absolute bottom-2 left-[5px] top-2 w-px bg-gold/50" />
         {memories.map((m, i) => (
           <Item key={m.id} memory={m} first={i === 0} />
         ))}

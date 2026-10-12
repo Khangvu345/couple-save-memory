@@ -3,7 +3,7 @@ export function Photo({ src, className = '', label = 'ẢNH' }: { src?: string |
   if (!src) {
     return (
       <div
-        className={`photo-tone flex items-center justify-center bg-gradient-to-br from-[#43331d] via-[#241d14] to-[#12100c] border border-white/10 ${className}`}
+        className={`photo-tone flex items-center justify-center bg-gradient-to-br from-panel via-ink to-ink border border-white/10 ${className}`}
       >
         <span className="font-mono text-[10px] tracking-[0.3em] text-cream/30">{label}</span>
       </div>

@@ -13,7 +13,8 @@ export function Credits({ couple }: { couple: Couple }) {
     const el = sectionRef.current;
     if (!el) return;
     const obs = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
-      threshold: 0.2,
+      rootMargin: '0px 0px -25% 0px',
+      threshold: 0,
     });
     obs.observe(el);
     return () => obs.disconnect();
@@ -22,32 +23,35 @@ export function Credits({ couple }: { couple: Couple }) {
   return (
     <section
       ref={sectionRef}
-      className={`film-frame cinema-surface relative mx-3 overflow-hidden px-7 py-20 text-center${inView ? ' credits-running' : ''}${paused ? ' credits-paused' : ''}`}
+      className={`film-frame cinema-surface relative mx-3 px-7 py-16 text-center${inView ? ' credits-running' : ''}${paused ? ' credits-paused' : ''}`}
     >
       <div className="absolute left-[16%] top-[16%] h-[90px] w-[90px] rounded-full bg-gold/25 blur-2xl" />
       <div className="absolute right-[20%] top-[42%] h-[50px] w-[50px] rounded-full bg-gold/20 blur-xl" />
       <div className="absolute left-[28%] top-[68%] h-9 w-9 rounded-full bg-gold/15 blur-lg" />
 
-      <button onClick={() => setPaused((p) => !p)} className="relative block w-full" aria-label="Chạm để tạm dừng / tiếp tục">
-        <div className="credits-inner">
-          <p className="font-mono text-[9px] tracking-[0.35em] text-smoke">ĐẠO DIỄN BỞI</p>
-          <p className="font-hand mt-2 text-[26px] text-cream">Định mệnh</p>
+      <button onClick={() => setPaused((p) => !p)} className="relative block w-full overflow-hidden" aria-label="Chạm để tạm dừng / tiếp tục">
+        {inView && (
+          <div className="credits-inner">
+            <p className="font-mono text-[9px] tracking-[0.35em] text-gold">ĐẠO DIỄN BỞI</p>
+            <p className="font-hand mt-2 text-[26px] text-cream">Định mệnh</p>
 
-          <p className="font-mono mt-8 text-[9px] tracking-[0.35em] text-smoke">BIÊN KỊCH</p>
-          <p className="font-hand mt-2 text-[26px] text-cream">{couple.name_a} &amp; {couple.name_b}</p>
+            <p className="font-mono mt-8 text-[9px] tracking-[0.35em] text-gold">BIÊN KỊCH</p>
+            <p className="font-hand mt-2 text-[26px] text-cream">{couple.name_a} &amp; {couple.name_b}</p>
 
-          <p className="font-mono mt-8 text-[9px] tracking-[0.35em] text-smoke">DIỄN VIÊN CHÍNH</p>
-          <p className="font-hand mt-2 text-[26px] text-cream">Hai chúng ta</p>
+            <p className="font-mono mt-8 text-[9px] tracking-[0.35em] text-gold">DIỄN VIÊN CHÍNH</p>
+            <p className="font-hand mt-2 text-[26px] text-cream">Hai chúng ta</p>
+            <p className="mt-10 text-gold">— — —</p>
 
-          <div className="mt-12 space-y-3">
-            {lines.map((l, i) => (
-              <p key={i} className="font-serif2 text-[16px] leading-[2]">
-                {l}
-              </p>
-            ))}
+            <div className="mt-12 space-y-3">
+              {lines.map((l, i) => (
+                <p key={i} className="font-serif2 text-[16px] leading-[2]">
+                  {l}
+                </p>
+              ))}
+            </div>
+            <p className="mt-4 text-gold">♡</p>
           </div>
-          <p className="mt-4 text-gold">♡</p>
-        </div>
+        )}
       </button>
 
       <div className="relative mt-10">

@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from 'next';
-import { Oswald, Playfair_Display, Dancing_Script, Be_Vietnam_Pro } from 'next/font/google';
+import { Bebas_Neue, Oswald, Playfair_Display, Dancing_Script, Be_Vietnam_Pro } from 'next/font/google';
 import './globals.css';
 
+const bebas = Bebas_Neue({ weight: '400', subsets: ['latin', 'latin-ext'], variable: '--font-bebas' });
 const oswald = Oswald({ weight: ['600', '700'], subsets: ['latin', 'vietnamese'], variable: '--font-oswald' });
-const playfair = Playfair_Display({ style: 'italic', weight: ['500', '600'], subsets: ['latin', 'vietnamese'], variable: '--font-playfair' });
+const playfair = Playfair_Display({ style: ['normal', 'italic'], weight: ['500', '600'], subsets: ['latin', 'vietnamese'], variable: '--font-playfair' });
 const dancing = Dancing_Script({ weight: ['500', '600', '700'], subsets: ['latin', 'vietnamese'], variable: '--font-dancing' });
 const beVietnam = Be_Vietnam_Pro({ weight: ['400', '500', '600'], subsets: ['latin', 'vietnamese'], variable: '--font-bevietnam' });
 
@@ -21,7 +22,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="vi" suppressHydrationWarning className={`${oswald.variable} ${playfair.variable} ${dancing.variable} ${beVietnam.variable}`}>
+    <html lang="vi" suppressHydrationWarning className={`${bebas.variable} ${oswald.variable} ${playfair.variable} ${dancing.variable} ${beVietnam.variable}`}>
       <body className="grain antialiased">{children}</body>
     </html>
   );
