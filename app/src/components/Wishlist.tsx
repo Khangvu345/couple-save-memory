@@ -86,7 +86,7 @@ export function Wishlist({ wishes, configured, coupleNames }: {
         onOptimisticOk={(tempId, real) => swapTemp(tempId, real)}
       />
 
-      <p className="mt-8 text-center font-hand text-[17px] text-smoke/70">giữ ảnh một chút để ngắm kỹ hơn ♡</p>
+      <p className="mt-8 text-center font-hand text-[17px] text-gold/70">giữ ảnh một chút để ngắm kỹ hơn ♡</p>
 
       {editing && (
         <EditWishSheet
