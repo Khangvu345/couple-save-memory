@@ -35,4 +35,5 @@ export interface Wish {
   done: boolean;
   created_by?: string | null;
   created_at: string;
+  pending?: boolean; // item tạm khi optimistic UI, không lưu DB
 }
