@@ -9,8 +9,27 @@ const dancing = Dancing_Script({ weight: ['500', '600', '700'], subsets: ['latin
 const beVietnam = Be_Vietnam_Pro({ weight: ['400', '500', '600'], subsets: ['latin', 'vietnamese'], variable: '--font-bevietnam' });
 
 export const metadata: Metadata = {
-  title: 'Bộ phim của chúng ta',
+  title: 'Bộ phim của chúng ta 🎬',
   description: 'Nơi lưu giữ kỷ niệm của hai đứa mình.',
+  openGraph: {
+    title: 'Bộ phim của chúng ta 🎬',
+    description: 'Nơi lưu giữ kỷ niệm của hai đứa mình.',
+    type: 'website',
+    images: [
+      {
+        url: 'https://couple-save-memory.vercel.app/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Bộ phim của chúng ta',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Bộ phim của chúng ta 🎬',
+    description: 'Nơi lưu giữ kỷ niệm của hai đứa mình.',
+    images: ['https://couple-save-memory.vercel.app/og-image.jpg'],
+  },
 };
 
 export const viewport: Viewport = {

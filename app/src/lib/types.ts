@@ -7,6 +7,7 @@ export interface Couple {
   start_date: string; // YYYY-MM-DD
   start_time?: string | null; // HH:MM:SS theo giờ Việt Nam
   hero_photo_url?: string | null;
+  counter_photo_url?: string | null; // ảnh hiển thị ở section bộ đếm
   love_letter?: string | null;
 }
 

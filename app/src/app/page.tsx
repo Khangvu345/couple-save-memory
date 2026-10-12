@@ -7,6 +7,7 @@ import { Timeline } from '@/components/Timeline';
 import { LittleThings } from '@/components/LittleThings';
 import { Wishlist } from '@/components/Wishlist';
 import { Credits } from '@/components/Credits';
+import { ContentManager } from '@/components/ContentManager'; // TẠM THỜI: ẩn đi khi nhập xong nội dung
 
 export const revalidate = 60; // refresh nội dung mỗi phút
 
@@ -21,7 +22,7 @@ export default async function Page() {
     const sb = getSupabase()!;
     const cid = coupleId();
     const [cRes, mRes, tRes, wRes] = await Promise.all([
-      sb.from('couples').select('id,name_a,name_b,start_date,start_time,hero_photo_url,love_letter').eq('id', cid).single(),
+      sb.from('couples').select('id,name_a,name_b,start_date,start_time,hero_photo_url,counter_photo_url,love_letter').eq('id', cid).single(),
       sb.from('memories').select('*').eq('couple_id', cid).order('sort_order').order('date'),
       sb.from('little_things').select('*').eq('couple_id', cid).order('sort_order'),
       sb.from('wishes').select('*').eq('couple_id', cid).order('created_at'),
@@ -40,6 +41,8 @@ export default async function Page() {
       <LittleThings things={things} />
       <Wishlist wishes={wishes} configured={configured} coupleNames={[couple.name_a, couple.name_b]} />
       <Credits couple={couple} />
+      {/* TẠM THỜI: khu vực quản trị — xóa dòng này để ẩn đi khi nhập xong nội dung */}
+      <ContentManager memories={memories} things={things} heroPhotoUrl={couple.hero_photo_url} counterPhotoUrl={couple.counter_photo_url} />
     </main>
   );
 }

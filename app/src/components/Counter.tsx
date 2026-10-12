@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import type { Couple } from '@/lib/types';
+import { Photo } from './Photo';
 
 const vietnamParts = new Intl.DateTimeFormat('en-CA', {
   timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit',
@@ -56,6 +57,14 @@ export function Counter({ couple }: { couple: Couple }) {
     <section id="counter" className="cinema-surface relative overflow-hidden px-5 py-16 text-center">
       <div className="absolute left-[14%] top-[22%] h-14 w-14 rounded-full bg-gold/20 blur-xl" />
       <div className="absolute right-[16%] top-[48%] h-10 w-10 rounded-full bg-gold/15 blur-lg" />
+
+      {couple.counter_photo_url && (
+        <div className="relative mx-auto mb-10 max-w-[280px] rotate-1">
+          <div className="border-2 border-[#ded4c1] bg-[#ded4c1] p-[4px] shadow-[0_14px_30px_rgba(0,0,0,0.55)]">
+            <Photo src={couple.counter_photo_url} className="photo-tone aspect-[4/3] w-full object-cover" />
+          </div>
+        </div>
+      )}
 
       <p className="text-left font-mono text-[11px] tracking-[0.35em] text-smoke">BẮT ĐẦU TỪ</p>
       <p className="text-left font-serif2 mt-3 text-[26px] text-gold">{fmtDate(couple.start_date)} ♡</p>
