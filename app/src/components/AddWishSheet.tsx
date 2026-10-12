@@ -20,7 +20,7 @@ interface Props {
   coupleNames: [string, string];
   onOptimisticAdd: (temp: Wish) => void;
   onOptimisticFailed: (tempId: string, msg: string) => void;
-  onOptimisticOk: () => void;
+  onOptimisticOk: (tempId: string, real: Wish) => void;
 }
 
 export function AddWishSheet({ configured, coupleNames, onOptimisticAdd, onOptimisticFailed, onOptimisticOk }: Props) {
@@ -58,7 +58,8 @@ export function AddWishSheet({ configured, coupleNames, onOptimisticAdd, onOptim
       const tempUrls = compressed.map((f) => URL.createObjectURL(f));
       onOptimisticAdd({
         id: tempId, text: text.trim(), photos: tempUrls,
-        done: false, created_at: new Date().toISOString(), pending: true,
+        done: false, created_at: new Date().toISOString(),
+        created_by: by, pending: true,
       });
       setOpen(false); setText(''); setFiles([]); setPin('');
       // 2) upload thật chạy ngầm phía sau
@@ -71,7 +72,8 @@ export function AddWishSheet({ configured, coupleNames, onOptimisticAdd, onOptim
       if (res.status === 401) { sessionStorage.removeItem('couple-pin'); throw new Error('Sai mã PIN rồi, thử lại nhé.'); }
       if (!res.ok) throw new Error('Có lỗi khi lưu, thử lại nhé.');
       sessionStorage.setItem('couple-pin', savedPin);
-      onOptimisticOk(); // refresh: thay ảnh local bằng URL thật từ server
+      const data = await res.json();
+      onOptimisticOk(tempId, data.wish);
     } catch (e) {
       onOptimisticFailed(tempId, e instanceof Error ? e.message : 'Có lỗi xảy ra.');
     } finally {

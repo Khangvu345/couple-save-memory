@@ -40,11 +40,12 @@ export async function POST(req: Request) {
   if (!v.ok) return Response.json({ error: v.error }, { status: v.status });
 
   const urls = await uploadPhotos(admin, cid, toFiles(form));
-  const { error: insErr } = await admin.from('wishes').insert({
-    couple_id: cid, text, photos: urls, created_by: createdBy,
-  });
+  const { data: inserted, error: insErr } = await admin.from('wishes').insert({
+  couple_id: cid, text, photos: urls, created_by: createdBy,
+  }).select().single();
   if (insErr) return Response.json({ error: 'Không lưu được điều ước.' }, { status: 500 });
-  return Response.json({ ok: true });
+  return Response.json({ ok: true, wish: inserted });
+  
 }
 
 /** PATCH — sửa điều ước (chữ + ảnh: giữ/xóa/thêm) */
@@ -74,7 +75,8 @@ export async function PATCH(req: Request) {
   // chỉ giữ những URL vốn thuộc về wish này + ảnh mới, tối đa 3
   const photos = [...keptPhotos.filter((u) => existingPhotos.includes(u)), ...urls].slice(0, 3);
 
-  const { error: upErr } = await admin.from('wishes').update({ text, photos }).eq('id', id);
+  const { data: updated, error: upErr } = await admin.from('wishes').update({ text, photos }).eq('id', id).select().single();
   if (upErr) return Response.json({ error: 'Không lưu được.' }, { status: 500 });
-  return Response.json({ ok: true });
+  return Response.json({ ok: true, wish: updated });
 }
+  

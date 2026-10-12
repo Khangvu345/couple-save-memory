@@ -18,7 +18,7 @@ async function compressImage(file: File): Promise<Blob> {
 const xBtn = 'absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full border border-white/20 bg-black/70 text-[12px] text-cream';
 
 export function EditWishSheet({ wish, onClose, onSaved }: {
-  wish: Wish; onClose: () => void; onSaved: () => void;
+  wish: Wish; onClose: () => void; onSaved: (real: Wish) => void;
 }) {
   const [text, setText] = useState(wish.text);
   const [keptPhotos, setKeptPhotos] = useState<string[]>(wish.photos ?? []);
@@ -59,7 +59,8 @@ export function EditWishSheet({ wish, onClose, onSaved }: {
       if (res.status === 401) { sessionStorage.removeItem('couple-pin'); throw new Error('Sai mã PIN rồi, thử lại nhé.'); }
       if (!res.ok) throw new Error('Không lưu được, thử lại nhé.');
       sessionStorage.setItem('couple-pin', savedPin);
-      onSaved();
+      const data = await res.json();
+      onSaved(data.wish);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Có lỗi xảy ra.');
     } finally {
