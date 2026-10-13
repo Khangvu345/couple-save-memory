@@ -234,14 +234,20 @@ export function ContentManager({
               label="ẢNH HERO"
               fieldName="photos"
               current={heroSrc}
-              onSaved={setHeroSrc}
+              onSaved={(url) => {
+                setHeroSrc(url);
+                router.refresh();
+              }}
               onAuthError={needRelock}
             />
             <CouplePhotoField
               label="ẢNH BỘ ĐẾM"
               fieldName="counter_photos"
               current={counterSrc}
-              onSaved={setCounterSrc}
+              onSaved={(url) => {
+                setCounterSrc(url);
+                router.refresh();
+              }}
               onAuthError={needRelock}
             />
           </div>

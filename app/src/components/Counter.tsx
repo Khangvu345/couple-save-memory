@@ -55,17 +55,17 @@ export function Counter({ couple }: { couple: Couple }) {
   const elapsed = diffYMDHMS(couple.start_date, couple.start_time, now ?? vietnamNow());
   return (
     <section id="counter" className="cinema-surface relative overflow-hidden px-5 py-16 text-center">
-      <div className="absolute left-[14%] top-[22%] h-14 w-14 rounded-full bg-gold/20 blur-xl" />
-      <div className="absolute right-[16%] top-[48%] h-10 w-10 rounded-full bg-gold/15 blur-lg" />
-
       {couple.counter_photo_url && (
-        <div className="relative mx-auto mb-10 max-w-[280px] rotate-1">
-          <div className="border-2 border-[#ded4c1] bg-[#ded4c1] p-[4px] shadow-[0_14px_30px_rgba(0,0,0,0.55)]">
-            <Photo src={couple.counter_photo_url} className="photo-tone aspect-[4/3] w-full object-cover" />
-          </div>
+        <div className="absolute inset-0 z-0">
+          <Photo src={couple.counter_photo_url} className="h-full w-full" label="ẢNH BỘ ĐẾM" />
+          <div className="absolute inset-0 bg-gradient-to-b from-ink/55 via-ink/75 to-ink/95" />
         </div>
       )}
 
+      <div className="absolute left-[14%] top-[22%] z-10 h-14 w-14 rounded-full bg-gold/20 blur-xl" />
+      <div className="absolute right-[16%] top-[48%] z-10 h-10 w-10 rounded-full bg-gold/15 blur-lg" />
+
+      <div className="relative z-10">
       <p className="text-left font-mono text-[11px] tracking-[0.35em] text-smoke">BẮT ĐẦU TỪ</p>
       <p className="text-left font-serif2 mt-3 text-[26px] text-gold">{fmtDate(couple.start_date)} ♡</p>
 
@@ -103,6 +103,7 @@ export function Counter({ couple }: { couple: Couple }) {
         <p className="font-hand text-[21px] leading-[1.7]">
           Cảm ơn vì đã chọn ở lại.<br />Mỗi ngày có em<br />đều là một thước phim may mắn.
         </p>
+      </div>
       </div>
     </section>
   );

@@ -1,4 +1,5 @@
 import { adminContext, verifyPin, uploadPhotos, toFiles } from '@/lib/api-helpers';
+import { revalidatePath } from 'next/cache';
 
 /** PATCH /api/couple — đổi ảnh hero (field `photos`) hoặc ảnh bộ đếm (field `counter_photos`). */
 export async function PATCH(req: Request) {
@@ -18,5 +19,6 @@ export async function PATCH(req: Request) {
 
   const { error } = await admin.from('couples').update(update).eq('id', cid);
   if (error) return Response.json({ error: 'Không lưu được.' }, { status: 500 });
+  revalidatePath('/');
   return Response.json({ ok: true, ...update });
 }
