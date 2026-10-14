@@ -25,6 +25,7 @@ export async function POST(req: Request) {
       story: String(form.get('story') ?? ''),
       layout: String(form.get('layout') ?? 'standard'),
       photos: urls,
+      handwritten_note: String(form.get('handwritten_note') ?? '').slice(0, 120) || null,
       sort_order: count ?? 0,
     })
     .select()
@@ -88,6 +89,7 @@ export async function PATCH(req: Request) {
       story: String(form.get('story') ?? ''),
       layout: String(form.get('layout') ?? 'standard'),
       photos,
+      handwritten_note: String(form.get('handwritten_note') ?? '').slice(0, 120) || null,
     })
     .eq('id', id)
     .select()

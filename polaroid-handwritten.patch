@@ -1,0 +1,110 @@
+diff --git a/app/src/app/api/memories/route.ts b/app/src/app/api/memories/route.ts
+index c9b768c..9323e7d 100644
+--- a/app/src/app/api/memories/route.ts
++++ b/app/src/app/api/memories/route.ts
+@@ -25,6 +25,7 @@ export async function POST(req: Request) {
+       story: String(form.get('story') ?? ''),
+       layout: String(form.get('layout') ?? 'standard'),
+       photos: urls,
++      handwritten_note: String(form.get('handwritten_note') ?? '').slice(0, 120) || null,
+       sort_order: count ?? 0,
+     })
+     .select()
+@@ -88,6 +89,7 @@ export async function PATCH(req: Request) {
+       story: String(form.get('story') ?? ''),
+       layout: String(form.get('layout') ?? 'standard'),
+       photos,
++      handwritten_note: String(form.get('handwritten_note') ?? '').slice(0, 120) || null,
+     })
+     .eq('id', id)
+     .select()
+diff --git a/app/src/components/MemoryForm.tsx b/app/src/components/MemoryForm.tsx
+index 64a11a6..f611d3b 100644
+--- a/app/src/components/MemoryForm.tsx
++++ b/app/src/components/MemoryForm.tsx
+@@ -35,6 +35,7 @@ export function MemoryForm({
+   const [teaser, setTeaser] = useState(initial?.teaser ?? '');
+   const [story, setStory] = useState(initial?.story ?? '');
+   const [layout, setLayout] = useState<MemoryLayout>(initial?.layout ?? 'standard');
++  const [handwrittenNote, setHandwrittenNote] = useState(initial?.handwritten_note ?? '');
+   const [keptPhotos, setKeptPhotos] = useState<string[]>(initial?.photos ?? []);
+   const [newFiles, setNewFiles] = useState<File[]>([]);
+   const [pin, setPin] = useState('');
+@@ -81,6 +82,7 @@ export function MemoryForm({
+       form.append('teaser', teaser.trim());
+       form.append('story', story.trim());
+       form.append('layout', layout);
++      form.append('handwritten_note', handwrittenNote.trim());
+       form.append('keptPhotos', JSON.stringify(keptPhotos));
+       compressed.forEach((f) => form.append('photos', f));
+       const res = await fetch('/api/memories', { method: isEdit ? 'PATCH' : 'POST', body: form });
+@@ -156,6 +158,19 @@ export function MemoryForm({
+           ))}
+         </div>
+ 
++        {layout === 'polaroid' && (
++          <>
++            <label className={labelCls}>CHỮ VIẾT TAY (DƯỚI ẢNH POLAROID)</label>
++            <input
++              value={handwrittenNote}
++              onChange={(e) => setHandwrittenNote(e.target.value)}
++              placeholder="VD: hôm ấy em cười nhiều lắm"
++              className={`${inputCls} mt-2`}
++            />
++            <p className="mt-1 text-[11px] text-smoke">Khác với tiêu đề in trên viền ảnh — dòng này viết tay dưới khung ảnh.</p>
++          </>
++        )}
++
+         {needPhotos && (
+           <>
+             <p className="font-mono mt-5 text-[10px] tracking-[0.22em] text-smoke">
+diff --git a/app/src/components/Timeline.tsx b/app/src/components/Timeline.tsx
+index b121a13..8f54fd9 100644
+--- a/app/src/components/Timeline.tsx
++++ b/app/src/components/Timeline.tsx
+@@ -48,9 +48,19 @@ function Item({ memory, first }: { memory: Memory; first: boolean }) {
+   const hasPhotos = photos.length > 0;
+   // chỉ standard / polaroid có ảnh góc phải; các layout còn lại ảnh full-width hoặc không ảnh
+   const sidePhoto = hasPhotos && (memory.layout === 'standard' || memory.layout === 'polaroid');
++  // polaroid to + có caption chữ viết tay nên item phải cao tối thiểu ~180px,
++  // không thì ảnh absolute tràn xuống đè lên item phía dưới;
++  // có thêm dòng viết tay dưới khung thì cộng thêm ~44px
++  const minH = !sidePhoto
++    ? ''
++    : memory.layout === 'polaroid'
++      ? memory.handwritten_note
++        ? 'min-h-[224px]'
++        : 'min-h-[180px]'
++      : 'min-h-[116px]';
+ 
+   return (
+-    <div className={`relative mb-9 min-h-[104px] ${sidePhoto ? (memory.layout === 'polaroid' ? 'pr-[156px]' : 'pr-[112px]') : ''}`}>
++    <div className={`relative mb-9 ${minH} ${sidePhoto ? (memory.layout === 'polaroid' ? 'pr-[156px]' : 'pr-[112px]') : ''}`}>
+       <div className={`absolute -left-[21px] top-[5px] h-[9px] w-[9px] rounded-full ${dotCls}`} />
+       <p className={`font-mono text-[10px] tracking-[0.2em] ${dateCls}`}>{fmtDate(memory.date)}</p>
+ 
+@@ -82,6 +92,12 @@ function Item({ memory, first }: { memory: Memory; first: boolean }) {
+                   </p>
+                 )}
+               </div>
++              {/* chữ viết tay riêng dưới khung ảnh — khác caption in trên viền */}
++              {memory.handwritten_note && (
++                <p className="font-hand mt-2 -rotate-1 px-1 text-center text-[16px] leading-[1.4] text-gold/90">
++                  {memory.handwritten_note}
++                </p>
++              )}
+             </button>
+           )}
+ 
+diff --git a/app/src/lib/types.ts b/app/src/lib/types.ts
+index f49ef3f..72bd5b0 100644
+--- a/app/src/lib/types.ts
++++ b/app/src/lib/types.ts
+@@ -19,6 +19,7 @@ export interface Memory {
+   story: string;    // câu chuyện đầy đủ, hiện dần khi chạm ảnh
+   photos: string[];
+   layout: MemoryLayout;
++  handwritten_note?: string | null; // chữ viết tay dưới ảnh polaroid (khác caption)
+ }
+ 
+ export interface LittleThing {

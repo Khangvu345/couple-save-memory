@@ -48,9 +48,19 @@ function Item({ memory, first }: { memory: Memory; first: boolean }) {
   const hasPhotos = photos.length > 0;
   // chỉ standard / polaroid có ảnh góc phải; các layout còn lại ảnh full-width hoặc không ảnh
   const sidePhoto = hasPhotos && (memory.layout === 'standard' || memory.layout === 'polaroid');
+  // polaroid to + có caption chữ viết tay nên item phải cao tối thiểu ~180px,
+  // không thì ảnh absolute tràn xuống đè lên item phía dưới;
+  // có thêm dòng viết tay dưới khung thì cộng thêm ~44px
+  const minH = !sidePhoto
+    ? ''
+    : memory.layout === 'polaroid'
+      ? memory.handwritten_note
+        ? 'min-h-[224px]'
+        : 'min-h-[180px]'
+      : 'min-h-[116px]';
 
   return (
-    <div className={`relative mb-9 min-h-[104px] ${sidePhoto ? (memory.layout === 'polaroid' ? 'pr-[156px]' : 'pr-[112px]') : ''}`}>
+    <div className={`relative mb-9 ${minH} ${sidePhoto ? (memory.layout === 'polaroid' ? 'pr-[156px]' : 'pr-[112px]') : ''}`}>
       <div className={`absolute -left-[21px] top-[5px] h-[9px] w-[9px] rounded-full ${dotCls}`} />
       <p className={`font-mono text-[10px] tracking-[0.2em] ${dateCls}`}>{fmtDate(memory.date)}</p>
 
@@ -82,6 +92,12 @@ function Item({ memory, first }: { memory: Memory; first: boolean }) {
                   </p>
                 )}
               </div>
+              {/* chữ viết tay riêng dưới khung ảnh — khác caption in trên viền */}
+              {memory.handwritten_note && (
+                <p className="font-hand mt-2 -rotate-1 px-1 text-center text-[16px] leading-[1.4] text-gold/90">
+                  {memory.handwritten_note}
+                </p>
+              )}
             </button>
           )}
 

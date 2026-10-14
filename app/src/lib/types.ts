@@ -19,6 +19,7 @@ export interface Memory {
   story: string;    // câu chuyện đầy đủ, hiện dần khi chạm ảnh
   photos: string[];
   layout: MemoryLayout;
+  handwritten_note?: string | null; // chữ viết tay dưới ảnh polaroid (khác caption)
 }
 
 export interface LittleThing {

@@ -35,6 +35,7 @@ export function MemoryForm({
   const [teaser, setTeaser] = useState(initial?.teaser ?? '');
   const [story, setStory] = useState(initial?.story ?? '');
   const [layout, setLayout] = useState<MemoryLayout>(initial?.layout ?? 'standard');
+  const [handwrittenNote, setHandwrittenNote] = useState(initial?.handwritten_note ?? '');
   const [keptPhotos, setKeptPhotos] = useState<string[]>(initial?.photos ?? []);
   const [newFiles, setNewFiles] = useState<File[]>([]);
   const [pin, setPin] = useState('');
@@ -81,6 +82,7 @@ export function MemoryForm({
       form.append('teaser', teaser.trim());
       form.append('story', story.trim());
       form.append('layout', layout);
+      form.append('handwritten_note', handwrittenNote.trim());
       form.append('keptPhotos', JSON.stringify(keptPhotos));
       compressed.forEach((f) => form.append('photos', f));
       const res = await fetch('/api/memories', { method: isEdit ? 'PATCH' : 'POST', body: form });
@@ -155,6 +157,19 @@ export function MemoryForm({
             </button>
           ))}
         </div>
+
+        {layout === 'polaroid' && (
+          <>
+            <label className={labelCls}>CHỮ VIẾT TAY (DƯỚI ẢNH POLAROID)</label>
+            <input
+              value={handwrittenNote}
+              onChange={(e) => setHandwrittenNote(e.target.value)}
+              placeholder="VD: hôm ấy em cười nhiều lắm"
+              className={`${inputCls} mt-2`}
+            />
+            <p className="mt-1 text-[11px] text-smoke">Khác với tiêu đề in trên viền ảnh — dòng này viết tay dưới khung ảnh.</p>
+          </>
+        )}
 
         {needPhotos && (
           <>
