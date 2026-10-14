@@ -12,7 +12,8 @@ export function adminContext() {
 }
 
 export async function verifyPin(admin: SupabaseClient, cid: string, pin: string) {
-  const { data: couple } = await admin.from('couples').select('id,pin_hash').eq('id', cid).single();
+  const { data: couple, error } = await admin.from('couples').select('id,pin_hash').eq('id', cid).single();
+  if (error) return { ok: false as const, error: 'Không đọc được dữ liệu PIN từ Supabase.', status: 500 };
   if (!couple?.pin_hash) return { ok: false as const, error: 'Chưa đặt mã PIN.', status: 500 };
   const hash = createHash('sha256').update(pin).digest('hex');
   if (hash !== couple.pin_hash) return { ok: false as const, error: 'Sai mã PIN.', status: 401 };

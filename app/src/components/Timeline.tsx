@@ -44,48 +44,77 @@ function Item({ memory, first }: { memory: Memory; first: boolean }) {
   const toggle = () => setOpen((v) => !v);
   const dateCls = 'text-gold';
   const dotCls = 'bg-gold';
+  const photos = memory.photos ?? [];
+  const hasPhotos = photos.length > 0;
+  // chỉ standard / polaroid có ảnh góc phải; các layout còn lại ảnh full-width hoặc không ảnh
+  const sidePhoto = hasPhotos && (memory.layout === 'standard' || memory.layout === 'polaroid');
 
   return (
-    <div className="relative mb-9 min-h-[104px] pr-[112px]">
+    <div className={`relative mb-9 min-h-[104px] ${sidePhoto ? (memory.layout === 'polaroid' ? 'pr-[156px]' : 'pr-[112px]') : ''}`}>
       <div className={`absolute -left-[21px] top-[5px] h-[9px] w-[9px] rounded-full ${dotCls}`} />
       <p className={`font-mono text-[10px] tracking-[0.2em] ${dateCls}`}>{fmtDate(memory.date)}</p>
 
       {memory.layout === 'quote' ? (
-        <button onClick={toggle} className="mt-2 block text-left">
-          <p className="font-hand text-[26px] leading-[1.5] text-cream">“{memory.story}”</p>
-        </button>
+        /* quote: thuần chữ — chỉ ngày + nội dung, không ảnh, không nút mở rộng */
+        <p className="font-hand mt-2 text-[26px] leading-[1.5] text-cream">“{memory.story}”</p>
       ) : (
         <>
           {memory.title && <h3 className="mt-1 text-[15px] font-semibold">{memory.title}</h3>}
           {memory.teaser && <p className="mt-1 text-[13px] leading-[1.7] text-smoke">{memory.teaser}</p>}
 
-          {memory.layout === 'polaroid' && (
-            <button onClick={toggle} className="absolute right-0 top-1 block w-[98px] text-left">
-              <div className="rotate-2 rounded-[2px] bg-cream p-[5px] pb-[16px] shadow-[0_10px_22px_rgba(0,0,0,0.55)]">
-                <Photo src={memory.photos[0]} className="aspect-square w-full rounded-[1px]" />
-              </div>
-            </button>
-          )}
-
-          {(memory.layout === 'big' || memory.layout === 'standard') && (
+          {/* standard: thumbnail nhỏ góc phải */}
+          {memory.layout === 'standard' && hasPhotos && (
             <button onClick={toggle} className="absolute right-0 top-1 block w-[98px]">
               <div className="rotate-2 border-2 border-cream p-[3px] shadow-[0_10px_22px_rgba(0,0,0,0.55)]">
-                <Photo src={memory.photos[0]} className="aspect-square w-full rounded-none" />
+                <Photo src={photos[0]} className="aspect-square w-full rounded-none" />
               </div>
             </button>
           )}
 
-          {memory.layout === 'pair' && (
-            <button onClick={toggle} className="absolute right-0 top-1 flex w-[98px] gap-1 border-2 border-cream bg-cream p-[3px] shadow-[0_10px_22px_rgba(0,0,0,0.55)]">
-              <Photo src={memory.photos[0]} className="aspect-[3/4] min-w-0 flex-1" />
-              <Photo src={memory.photos[1]} className="aspect-[3/4] min-w-0 flex-1" />
+          {/* polaroid: to hơn + chữ viết tay trên viền */}
+          {memory.layout === 'polaroid' && hasPhotos && (
+            <button onClick={toggle} className="absolute right-0 top-1 block w-[140px] text-left">
+              <div className="rotate-2 rounded-[2px] bg-cream p-[6px] pb-[10px] shadow-[0_10px_22px_rgba(0,0,0,0.55)]">
+                <Photo src={photos[0]} className="aspect-square w-full rounded-[1px]" />
+                {memory.title && (
+                  <p className="font-hand mt-1 truncate text-center text-[15px] leading-none text-[#6b5f45]">
+                    {memory.title}
+                  </p>
+                )}
+              </div>
             </button>
           )}
 
-          {!open && (
+          {/* big: ảnh full-width 16:10 dưới chữ */}
+          {memory.layout === 'big' && hasPhotos && (
+            <button onClick={toggle} className="mt-3 block w-full text-left">
+              <div className="-rotate-1 border-2 border-cream p-[4px] shadow-[0_14px_28px_rgba(0,0,0,0.55)]">
+                <Photo src={photos[0]} className="aspect-[16/10] w-full rounded-none" />
+              </div>
+            </button>
+          )}
+
+          {/* pair: 2 ảnh lớn cạnh nhau dưới chữ */}
+          {memory.layout === 'pair' && hasPhotos && (
+            <button onClick={toggle} className="mt-3 flex w-full gap-2 text-left">
+              {[0, 1].map(
+                (i) =>
+                  photos[i] && (
+                    <div
+                      key={i}
+                      className={`${i === 0 ? '-rotate-2' : 'rotate-2'} min-w-0 flex-1 border-2 border-cream bg-cream p-[3px] shadow-[0_10px_22px_rgba(0,0,0,0.55)]`}
+                    >
+                      <Photo src={photos[i]} className="aspect-[3/4] w-full" />
+                    </div>
+                  ),
+              )}
+            </button>
+          )}
+
+          {memory.story && !open && (
             <button onClick={toggle} className="mt-3 flex items-center gap-2 text-gold">
               <span className="pulse-dot" />
-              <span className="text-[11px] tracking-[0.1em]">CHẠM ẢNH ĐỂ ĐỌC TIẾP</span>
+              <span className="text-[11px] tracking-[0.1em]">{hasPhotos ? 'CHẠM ẢNH ĐỂ ĐỌC TIẾP' : 'ĐỌC CÂU CHUYỆN'}</span>
             </button>
           )}
           <Story memory={memory} open={open} onToggle={toggle} />

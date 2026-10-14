@@ -6,11 +6,11 @@ import { compressImage } from '@/lib/image';
 const MAX_PHOTOS = 4;
 
 const LAYOUTS: { id: MemoryLayout; label: string; hint: string }[] = [
-  { id: 'standard', label: 'Chuẩn', hint: '1 ảnh 4:3' },
-  { id: 'big', label: 'Ảnh lớn', hint: '1 ảnh 16:10' },
-  { id: 'polaroid', label: 'Polaroid', hint: '1 ảnh nhỏ nghiêng' },
-  { id: 'pair', label: '2 ảnh nghiêng', hint: '2 ảnh dọc' },
-  { id: 'quote', label: 'Chỉ câu nói', hint: 'không cần ảnh' },
+  { id: 'standard', label: 'Chuẩn', hint: 'ảnh nhỏ góc phải' },
+  { id: 'big', label: 'Ảnh lớn', hint: 'ảnh ngang lớn 16:10' },
+  { id: 'polaroid', label: 'Polaroid', hint: 'ảnh to + chữ viết tay' },
+  { id: 'pair', label: '2 ảnh nghiêng', hint: '2 ảnh lớn cạnh nhau' },
+  { id: 'quote', label: 'Chỉ câu nói', hint: 'chỉ chữ, không ảnh' },
 ];
 
 const xBtn =
@@ -108,23 +108,27 @@ export function MemoryForm({
         <label className={labelCls}>NGÀY</label>
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={`${inputCls} mt-2`} />
 
-        <label className={labelCls}>TIÊU ĐỀ</label>
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="VD: Buổi hẹn đầu tiên"
-          className={`${inputCls} mt-2`}
-        />
+        {layout !== 'quote' && (
+          <>
+            <label className={labelCls}>TIÊU ĐỀ</label>
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="VD: Buổi hẹn đầu tiên"
+              className={`${inputCls} mt-2`}
+            />
 
-        <label className={labelCls}>TEASER (DÒNG HIỆN SẴN)</label>
-        <input
-          value={teaser}
-          onChange={(e) => setTeaser(e.target.value)}
-          placeholder="1 câu ngắn hiện sẵn dưới ảnh"
-          className={`${inputCls} mt-2`}
-        />
+            <label className={labelCls}>TEASER (DÒNG HIỆN SẴN)</label>
+            <input
+              value={teaser}
+              onChange={(e) => setTeaser(e.target.value)}
+              placeholder="1 câu ngắn hiện sẵn dưới ảnh"
+              className={`${inputCls} mt-2`}
+            />
+          </>
+        )}
 
-        <label className={labelCls}>CÂU CHUYỆN ĐẦY ĐỦ (CHẠM ẢNH ĐỂ ĐỌC)</label>
+        <label className={labelCls}>{layout === 'quote' ? 'NỘI DUNG' : 'CÂU CHUYỆN ĐẦY ĐỦ (CHẠM ẢNH ĐỂ ĐỌC)'}</label>
         <textarea
           value={story}
           onChange={(e) => setStory(e.target.value)}
@@ -155,7 +159,7 @@ export function MemoryForm({
         {needPhotos && (
           <>
             <p className="font-mono mt-5 text-[10px] tracking-[0.22em] text-smoke">
-              ẢNH · TỐI ĐA {MAX_PHOTOS} ẢNH · {totalPhotos}/{MAX_PHOTOS}
+              ẢNH · KHÔNG BẮT BUỘC · TỐI ĐA {MAX_PHOTOS} · {totalPhotos}/{MAX_PHOTOS}
             </p>
             <div className="mt-2 flex flex-wrap gap-[10px]">
               {keptPhotos.map((src) => (
