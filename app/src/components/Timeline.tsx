@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Memory } from '@/lib/types';
 import { Photo } from './Photo';
 
@@ -29,13 +29,48 @@ function RevealText({ text }: { text: string }) {
 
 function Story({ memory, open, onToggle }: { memory: Memory; open: boolean; onToggle: () => void }) {
   if (!open) return null;
+  const effect = memory.text_effect ?? 'fade';
   return (
     <div className="mt-3 rounded-[3px] bg-panel px-5 py-5">
-      <RevealText text={memory.story} />
+      {effect === 'typewriter' ? <TypewriterText text={memory.story} /> : <RevealText text={memory.story} />}
       <button onClick={onToggle} className="mt-4 font-mono text-[10px] tracking-[0.25em] text-smoke">
         CHẠM ĐỂ THU GỌN ▴
       </button>
     </div>
+  );
+}
+
+/** Chữ hiện từng ký tự như gõ máy, kèm con trỏ nhấp nháy. */
+function TypewriterText({ text }: { text: string }) {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setN(text.length);
+      return;
+    }
+    setN(0);
+    if (!text.length) return;
+    const id = setInterval(() => {
+      setN((v) => {
+        if (v >= text.length) {
+          clearInterval(id);
+          return v;
+        }
+        return v + 1;
+      });
+    }, 20);
+    return () => clearInterval(id);
+  }, [text]);
+  const done = n >= text.length;
+  return (
+    <p className="text-[14px] leading-[1.9]">
+      {text.slice(0, n)}
+      {!done && (
+        <span aria-hidden="true" className="type-caret">
+          ▍
+        </span>
+      )}
+    </p>
   );
 }
 

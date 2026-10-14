@@ -14,6 +14,8 @@ export async function POST(req: Request) {
 
   const urls = await uploadPhotos(admin, cid, 'memories', toFiles(form, 4));
   const { count } = await admin.from('memories').select('id', { count: 'exact', head: true }).eq('couple_id', cid);
+  const rawEffect = String(form.get('text_effect') ?? 'fade');
+  const textEffect = rawEffect === 'typewriter' ? 'typewriter' : 'fade';
 
   const { data: inserted, error } = await admin
     .from('memories')
@@ -26,6 +28,7 @@ export async function POST(req: Request) {
       layout: String(form.get('layout') ?? 'standard'),
       photos: urls,
       handwritten_note: String(form.get('handwritten_note') ?? '').slice(0, 120) || null,
+      text_effect: textEffect,
       sort_order: count ?? 0,
     })
     .select()
@@ -79,6 +82,8 @@ export async function PATCH(req: Request) {
   const urls = await uploadPhotos(admin, cid, 'memories', toFiles(form, 4));
   const existingPhotos: string[] = existing.photos ?? [];
   const photos = [...keptPhotos.filter((u) => existingPhotos.includes(u)), ...urls].slice(0, 4);
+  const rawEffect = String(form.get('text_effect') ?? 'fade');
+  const textEffect = rawEffect === 'typewriter' ? 'typewriter' : 'fade';
 
   const { data: updated, error } = await admin
     .from('memories')
@@ -90,6 +95,7 @@ export async function PATCH(req: Request) {
       layout: String(form.get('layout') ?? 'standard'),
       photos,
       handwritten_note: String(form.get('handwritten_note') ?? '').slice(0, 120) || null,
+      text_effect: textEffect,
     })
     .eq('id', id)
     .select()

@@ -1,4 +1,5 @@
 export type MemoryLayout = 'polaroid' | 'big' | 'quote' | 'pair' | 'standard';
+export type TextEffect = 'fade' | 'typewriter';
 
 export interface Couple {
   id: string;
@@ -20,6 +21,7 @@ export interface Memory {
   photos: string[];
   layout: MemoryLayout;
   handwritten_note?: string | null; // chữ viết tay dưới ảnh polaroid (khác caption)
+  text_effect?: TextEffect | null; // kiểu chữ xuất hiện khi mở câu chuyện
 }
 
 export interface LittleThing {

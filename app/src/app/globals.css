@@ -112,6 +112,18 @@ body {
   animation: word-in 0.5s ease forwards;
 }
 
+/* con trỏ gõ máy */
+@keyframes caret-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.type-caret {
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--color-gold);
+  animation: caret-blink 0.9s steps(1) infinite;
+}
+
 /* hero title reveal từng chữ */
 @keyframes letter-in {
   from { opacity: 0; transform: translateY(24px); }

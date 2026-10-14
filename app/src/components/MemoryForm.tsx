@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { Memory, MemoryLayout } from '@/lib/types';
+import type { Memory, MemoryLayout, TextEffect } from '@/lib/types';
 import { compressImage } from '@/lib/image';
 
 const MAX_PHOTOS = 4;
@@ -11,6 +11,11 @@ const LAYOUTS: { id: MemoryLayout; label: string; hint: string }[] = [
   { id: 'polaroid', label: 'Polaroid', hint: 'ảnh to + chữ viết tay' },
   { id: 'pair', label: '2 ảnh nghiêng', hint: '2 ảnh lớn cạnh nhau' },
   { id: 'quote', label: 'Chỉ câu nói', hint: 'chỉ chữ, không ảnh' },
+];
+
+const TEXT_EFFECTS: { id: TextEffect; label: string; hint: string }[] = [
+  { id: 'fade', label: 'Mờ dần', hint: 'từng từ hiện dần' },
+  { id: 'typewriter', label: 'Gõ máy', hint: 'gõ từng ký tự' },
 ];
 
 const xBtn =
@@ -35,6 +40,7 @@ export function MemoryForm({
   const [teaser, setTeaser] = useState(initial?.teaser ?? '');
   const [story, setStory] = useState(initial?.story ?? '');
   const [layout, setLayout] = useState<MemoryLayout>(initial?.layout ?? 'standard');
+  const [textEffect, setTextEffect] = useState<TextEffect>(initial?.text_effect ?? 'fade');
   const [handwrittenNote, setHandwrittenNote] = useState(initial?.handwritten_note ?? '');
   const [keptPhotos, setKeptPhotos] = useState<string[]>(initial?.photos ?? []);
   const [newFiles, setNewFiles] = useState<File[]>([]);
@@ -82,6 +88,7 @@ export function MemoryForm({
       form.append('teaser', teaser.trim());
       form.append('story', story.trim());
       form.append('layout', layout);
+      form.append('text_effect', textEffect);
       form.append('handwritten_note', handwrittenNote.trim());
       form.append('keptPhotos', JSON.stringify(keptPhotos));
       compressed.forEach((f) => form.append('photos', f));
@@ -154,6 +161,25 @@ export function MemoryForm({
                 {l.label}
               </span>
               <span className="block text-[10px] text-smoke">{l.hint}</span>
+            </button>
+          ))}
+        </div>
+
+        <label className={labelCls}>KIỂU CHỮ XUẤT HIỆN</label>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {TEXT_EFFECTS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setTextEffect(t.id)}
+              className={`rounded-xl border px-3 py-2 text-left ${
+                textEffect === t.id ? 'border-gold bg-gold/10' : 'border-white/15'
+              }`}
+            >
+              <span className={`block text-[13px] font-medium ${textEffect === t.id ? 'text-gold' : 'text-cream'}`}>
+                {t.label}
+              </span>
+              <span className="block text-[10px] text-smoke">{t.hint}</span>
             </button>
           ))}
         </div>
