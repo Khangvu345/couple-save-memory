@@ -58,7 +58,7 @@ function TypewriterText({ text }: { text: string }) {
         }
         return v + 1;
       });
-    }, 20);
+    }, 60);
     return () => clearInterval(id);
   }, [text]);
   const done = n >= text.length;
