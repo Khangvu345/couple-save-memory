@@ -48,16 +48,9 @@ function Item({ memory, first }: { memory: Memory; first: boolean }) {
   const hasPhotos = photos.length > 0;
   // chỉ standard / polaroid có ảnh góc phải; các layout còn lại ảnh full-width hoặc không ảnh
   const sidePhoto = hasPhotos && (memory.layout === 'standard' || memory.layout === 'polaroid');
-  // polaroid to + có caption chữ viết tay nên item phải cao tối thiểu ~180px,
-  // không thì ảnh absolute tràn xuống đè lên item phía dưới;
-  // có thêm dòng viết tay dưới khung thì cộng thêm ~44px
-  const minH = !sidePhoto
-    ? ''
-    : memory.layout === 'polaroid'
-      ? memory.handwritten_note
-        ? 'min-h-[224px]'
-        : 'min-h-[180px]'
-      : 'min-h-[116px]';
+  // polaroid to (140px + viền trắng) nên item phải cao tối thiểu ~180px,
+  // không thì ảnh absolute tràn xuống đè lên item phía dưới
+  const minH = !sidePhoto ? '' : memory.layout === 'polaroid' ? 'min-h-[180px]' : 'min-h-[116px]';
 
   return (
     <div className={`relative mb-9 ${minH} ${sidePhoto ? (memory.layout === 'polaroid' ? 'pr-[156px]' : 'pr-[112px]') : ''}`}>
@@ -86,18 +79,13 @@ function Item({ memory, first }: { memory: Memory; first: boolean }) {
             <button onClick={toggle} className="absolute right-0 top-1 block w-[140px] text-left">
               <div className="rotate-2 rounded-[2px] bg-cream p-[6px] pb-[10px] shadow-[0_10px_22px_rgba(0,0,0,0.55)]">
                 <Photo src={photos[0]} className="aspect-square w-full rounded-[1px]" />
-                {memory.title && (
+                {/* chữ viết tay trên viền ảnh — như polaroid thật; trống thì hiện tiêu đề */}
+                {(memory.handwritten_note || memory.title) && (
                   <p className="font-hand mt-1 truncate text-center text-[15px] leading-none text-[#6b5f45]">
-                    {memory.title}
+                    {memory.handwritten_note || memory.title}
                   </p>
                 )}
               </div>
-              {/* chữ viết tay riêng dưới khung ảnh — khác caption in trên viền */}
-              {memory.handwritten_note && (
-                <p className="font-hand mt-2 -rotate-1 px-1 text-center text-[16px] leading-[1.4] text-gold/90">
-                  {memory.handwritten_note}
-                </p>
-              )}
             </button>
           )}
 

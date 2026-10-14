@@ -160,14 +160,14 @@ export function MemoryForm({
 
         {layout === 'polaroid' && (
           <>
-            <label className={labelCls}>CHỮ VIẾT TAY (DƯỚI ẢNH POLAROID)</label>
+            <label className={labelCls}>CHỮ VIẾT TAY (TRÊN VIỀN ẢNH)</label>
             <input
               value={handwrittenNote}
               onChange={(e) => setHandwrittenNote(e.target.value)}
               placeholder="VD: hôm ấy em cười nhiều lắm"
               className={`${inputCls} mt-2`}
             />
-            <p className="mt-1 text-[11px] text-smoke">Khác với tiêu đề in trên viền ảnh — dòng này viết tay dưới khung ảnh.</p>
+            <p className="mt-1 text-[11px] text-smoke">Viết tay trên viền trắng của ảnh polaroid. Để trống thì hiện tiêu đề.</p>
           </>
         )}
 
