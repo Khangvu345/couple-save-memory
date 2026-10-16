@@ -18,7 +18,7 @@ function RevealText({ text }: { text: string }) {
         /^\s+$/.test(w) ? (
           <span key={i}>{w}</span>
         ) : (
-          <span key={i} className="word-reveal" style={{ animationDelay: `${(wi++) * 70}ms` }}>
+          <span key={i} className="word-reveal" style={{ animationDelay: `${(wi++) * 50}ms` }}>
             {w}
           </span>
         ),

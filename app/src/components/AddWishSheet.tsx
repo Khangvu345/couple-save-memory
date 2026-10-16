@@ -151,12 +151,15 @@ export function AddWishSheet({ configured, coupleNames, onOptimisticAdd, onOptim
             <p className="mt-2 text-[11px] text-smoke">{files.length}/{MAX_PHOTOS} ảnh</p>
 
             {!sessionStorage.getItem('couple-pin') && (
-              <input
-                value={pin} onChange={(e) => setPin(e.target.value)}
-                placeholder="Mã PIN chung của hai đứa"
-                inputMode="numeric"
-                className="mt-4 w-full rounded-xl border border-white/15 bg-ink p-4 text-cream placeholder:text-smoke/60 focus:outline-none"
-              />
+              <>
+                <input
+                  value={pin} onChange={(e) => setPin(e.target.value)}
+                  placeholder="Mã PIN chung của hai đứa"
+                  inputMode="numeric"
+                  className="mt-4 w-full rounded-xl border border-white/15 bg-ink p-4 text-cream placeholder:text-smoke/60 focus:outline-none"
+                />
+                <p className="mt-1 text-[11px] text-smoke">Gợi ý: mã PIN gồm 4 chữ số.</p>
+              </>
             )}
 
             {error && <p className="mt-3 text-[13px] text-red-400">{error}</p>}
